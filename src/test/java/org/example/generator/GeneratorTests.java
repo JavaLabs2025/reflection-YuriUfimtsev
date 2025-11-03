@@ -3,6 +3,7 @@ package org.example.generator;
 import org.example.classes.CyclicClassA;
 import org.example.classes.DeepClass;
 import org.example.classes.TestClass;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -12,11 +13,15 @@ import java.util.List;
 import java.util.Set;
 
 class GeneratorTests {
+    private Generator generator;
+
+    @BeforeEach
+    void setUp() {
+        generator = new Generator();
+    }
 
     @Test
     void shouldGeneratePrimitiveTypes() {
-        var generator = new Generator();
-
         assertNotNull(generator.generateValueOfType(Integer.class));
         assertNotNull(generator.generateValueOfType(String.class));
         assertNotNull(generator.generateValueOfType(Boolean.class));
@@ -24,8 +29,6 @@ class GeneratorTests {
 
     @Test
     void shouldGenerateArray() {
-        var generator = new Generator();
-
         int[] intArray = (int[]) generator.generateValueOfType(int[].class);
         assertNotNull(intArray);
         assertTrue(intArray.length > 0);
@@ -37,8 +40,6 @@ class GeneratorTests {
 
     @Test
     void shouldGenerateCollections() {
-        var generator = new Generator();
-
         List<?> list = (List<?>) generator.generateValueOfType(List.class);
         assertNotNull(list);
 
@@ -48,7 +49,6 @@ class GeneratorTests {
 
     @Test
     void shouldGenerateCustomClass() {
-        var generator = new Generator();
         var instance = generator.generateValueOfType(TestClass.class);
         assertNotNull(instance);
     }
@@ -56,14 +56,12 @@ class GeneratorTests {
     @Timeout(60)
     @Test
     void shouldStopGenerationEvenWithCyclicalDependencies() {
-        var generator = new Generator();
         var instance = generator.generateValueOfType(CyclicClassA.class);
         assertNotNull(instance);
     }
 
     @Test
     void shouldGenerateClassWithFieldOfAnotherCustomClass() {
-        var generator = new Generator();
         var instance = generator.generateValueOfType(DeepClass.class);
         assertNotNull(instance);
     }
