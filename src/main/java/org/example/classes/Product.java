@@ -1,5 +1,8 @@
 package org.example.classes;
 
+import org.example.annotations.Generatable;
+
+@Generatable
 public class Product {
     private String name;
     private double price;
@@ -42,7 +45,9 @@ public class Product {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                '}';
     }
-
 }
